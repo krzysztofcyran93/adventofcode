@@ -9,12 +9,11 @@ hands = {
 }
 
 strategy = [
-    ['A', 'B', 'C'],
-    # ['X', 'Y', 'Z'],
-    # ['X', 'Z', 'Y'],
-    # ['Y', 'X', 'Z'],
-    # ['Y', 'Z', 'X'],
-    # ['Z', 'X', 'Y'],
+    ['X', 'Y', 'Z'],
+    ['X', 'Z', 'Y'],
+    ['Y', 'X', 'Z'],
+    ['Y', 'Z', 'X'],
+    ['Z', 'X', 'Y'],
     ['Z', 'Y', 'X'],
 ]
 
@@ -35,9 +34,10 @@ def round(one, two):
         return 'draw', hands[two] + 3
 
 
-def map_hands(one, two):
-    one_dict = {strategy[0][i]: [k for k in hands.keys()][i] for i in range(len(strategy[0]))}
-    two_dict = {strategy[1][i]: [k for k in hands.keys()][i] for i in range(len(strategy[1]))}
+def map_hands(one, two, strtg):
+    abc = ['A', 'B', 'C']
+    one_dict = {abc[i]: [k for k in hands.keys()][i] for i in range(len(abc))}
+    two_dict = {strtg[i]: [k for k in hands.keys()][i] for i in range(len(strtg))}
     return one_dict[one], two_dict[two]
 
 
@@ -52,25 +52,24 @@ def read_input(file):
 
 def main():
     inp = read_input(os.path.join(cwd, 'input'))
-    result = []
-    points = 0
-    for i in inp:
-        # print(i)
-        j = map_hands(*i)
-        # print(j)
-        res = round(*j)
-        # result.append(round(*j)[0])
-        result.append(res[0])
-        points += res[1]
+    for n, s in enumerate(strategy):
+        result = []
+        points = 0
+        print(f"Strategy {n} - {s}")
+        for i in inp:
+            j = map_hands(*i, strategy[n])
+            res = round(*j)
+            result.append(res[0])
+            points += res[1]
 
-    wins = result.count(True)
-    loses = result.count(False)
-    draws = result.count('draw')
-    print("Total wins {}".format(wins))
-    print("Total loses {}".format(loses))
-    print("Total draws {}".format(draws))
-    print("Total points: {}".format(points))
-
+        wins = result.count(True)
+        loses = result.count(False)
+        draws = result.count('draw')
+        print("Total wins {}".format(wins))
+        print("Total loses {}".format(loses))
+        print("Total draws {}".format(draws))
+        print("Total points: {}".format(points))
+        print('')
 
 
 
